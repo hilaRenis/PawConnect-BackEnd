@@ -9,7 +9,7 @@ import nl.fontys.pawconnect.persistence.entity.UserRoles;
 @AllArgsConstructor
 public class AccessToken {
     private final String subject;
-    private final Long userId;
+    private final String userId;
     private final UserRoles role;
 
 }

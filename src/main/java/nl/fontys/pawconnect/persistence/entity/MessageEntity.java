@@ -4,12 +4,8 @@ package nl.fontys.pawconnect.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
 
-import java.sql.Types;
 import java.util.Date;
-import java.util.UUID;
-
 @Entity
 @Table(name = "messages")
 @EqualsAndHashCode
@@ -20,16 +16,16 @@ import java.util.UUID;
 public class MessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", columnDefinition = "UUID")
-    private UUID id;
+    @Column(name = "id", columnDefinition = "VARCHAR(36)")
+    private String id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "sender_id", referencedColumnName = "id")
     @NotNull
     private UserEntity sender;
 
     @ManyToOne
-    @JoinColumn(name = "recipient_id")
+    @JoinColumn(name = "recipient_id", referencedColumnName = "id")
     @NotNull
     private UserEntity recipient;
 

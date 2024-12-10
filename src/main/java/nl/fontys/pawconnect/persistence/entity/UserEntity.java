@@ -3,13 +3,8 @@ package nl.fontys.pawconnect.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.validator.constraints.Length;
 import lombok.*;
-
-import java.sql.Types;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -20,9 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", columnDefinition = "uuid")
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", columnDefinition = "VARCHAR(36)")
+    private String id;
 
     @NotBlank
     @Length(min = 3, max = 50)

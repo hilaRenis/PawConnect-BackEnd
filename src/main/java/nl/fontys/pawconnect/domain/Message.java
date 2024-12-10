@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.Date;
-import java.util.UUID;
 
 @EqualsAndHashCode
 @Data
@@ -13,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Message {
-    private UUID id;
+    private String id;
 
     @NotNull
     private User sender;
