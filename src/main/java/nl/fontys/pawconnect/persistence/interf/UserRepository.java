@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 @RepositoryRestResource(exported = false)
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
     boolean existsByEmail(String email);
 
     boolean existsByUsername(String username);
