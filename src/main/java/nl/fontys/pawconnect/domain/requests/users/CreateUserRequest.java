@@ -18,8 +18,5 @@ public class CreateUserRequest {
     @NotBlank
     private String password;
     @NotBlank
-    private String firstName;
-    @NotBlank
-    private String lastName;
-    private String address;
+    private String fullName;
 }

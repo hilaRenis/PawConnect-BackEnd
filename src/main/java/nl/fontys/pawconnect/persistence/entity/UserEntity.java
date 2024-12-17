@@ -35,16 +35,8 @@ public class UserEntity {
 
     @NotBlank
     @Length(min = 3, max = 50)
-    @Column(name = "first_name")
-    private String firstName;
-
-    @NotBlank
-    @Length(min = 3, max = 50)
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "address")
-    private String address;
+    @Column(name = "full_name")
+    private String fullName;
 
     @NotNull
     @Enumerated(EnumType.STRING)

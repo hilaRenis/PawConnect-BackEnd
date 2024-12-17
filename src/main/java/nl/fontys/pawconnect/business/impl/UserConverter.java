@@ -14,9 +14,7 @@ public final class UserConverter {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .address(user.getAddress())
+                .fullName(user.getFullName())
                 .role(user.getRole())
                 .build();
     }

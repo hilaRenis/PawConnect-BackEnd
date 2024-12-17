@@ -56,14 +56,8 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
                 throw new EmailAlreadyExistsException();
             }
         }
-        if(request.getFirstName() != null){
-            user.setFirstName(request.getFirstName());
-        }
-        if(request.getLastName() != null){
-            user.setLastName(request.getLastName());
-        }
-        if(request.getAddress() != null){
-            user.setAddress(request.getAddress());
+        if(request.getFullName() != null){
+            user.setFullName(request.getFullName());
         }
         if(request.getPassword() != null){
             String errors = passwordValidator.validatePassword(request.getPassword());

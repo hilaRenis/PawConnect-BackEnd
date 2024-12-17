@@ -41,11 +41,9 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
         } else {
             return GetUserResponse.builder()
                     .id(userOptional.get().getId())
-                    .firstName(userOptional.get().getFirstName())
-                    .lastName(userOptional.get().getLastName())
+                    .fullName(userOptional.get().getFullName())
                     .email(userOptional.get().getEmail())
                     .username(userOptional.get().getUsername())
-                    .address(userOptional.get().getAddress())
                     .role(userOptional.get().getRole())
                 .build();
         }
