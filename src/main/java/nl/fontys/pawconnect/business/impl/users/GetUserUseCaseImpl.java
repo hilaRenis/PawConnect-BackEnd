@@ -1,7 +1,6 @@
 package nl.fontys.pawconnect.business.impl.users;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.pawconnect.business.exception.UnauthorizedAccessException;
 import nl.fontys.pawconnect.business.impl.UserConverter;
 import nl.fontys.pawconnect.business.exception.InvalidUserException;
 import nl.fontys.pawconnect.business.interf.users.GetUserUseCase;
@@ -19,19 +18,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class GetUserUseCaseImpl implements GetUserUseCase {
     private UserRepository userRepository;
-
+    private LoginValidator loginValidator;
     private AccessToken accessToken;
 
     @Override
     @Transactional
     public GetUserResponse getUser(GetUserRequest request) {
-        if(accessToken.getUserId().equals(request.getUserId())) {
-            if (!userRepository.existsById(request.getUserId())) {
-                throw new InvalidUserException("INVALID_USER_ID");
-            }
-        } else {
-            throw new UnauthorizedAccessException("USER_ID_NOT_FROM_LOGGED_IN_USER");
-        }
+        loginValidator.validateToken(accessToken, request.getUserId());
 
         Optional<User> userOptional = userRepository.findById(request.getUserId())
                 .map(UserConverter::convert);

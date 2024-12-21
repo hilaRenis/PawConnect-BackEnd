@@ -24,9 +24,9 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
 
     @Override
     @Transactional
-    public void updateUser(UpdateUserRequest request) {
-        if(accessToken.getUserId().equals(request.getId())) {
-            Optional<UserEntity> userOptional = userRepository.findById(request.getId());
+    public void updateUser(String userId, UpdateUserRequest request) {
+        if(accessToken.getUserId().equals(userId)) {
+            Optional<UserEntity> userOptional = userRepository.findById(userId);
             if (userOptional.isEmpty()) {
                 throw new InvalidUserException("USER_ID_INVALID");
             }

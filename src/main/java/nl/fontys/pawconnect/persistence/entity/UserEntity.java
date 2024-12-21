@@ -1,10 +1,13 @@
 package nl.fontys.pawconnect.persistence.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -41,6 +44,14 @@ public class UserEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private UserRoles role;
+
+    @Nullable
+    @Length(min = 3, max = 110)
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
+    @OneToMany(mappedBy = "announcer", cascade = CascadeType.ALL)
+    private List<AnnouncementEntity> announcements;
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<AccountEntity> accounts;

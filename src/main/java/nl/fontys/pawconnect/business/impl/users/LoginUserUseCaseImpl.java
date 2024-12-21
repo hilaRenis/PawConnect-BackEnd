@@ -6,7 +6,6 @@ import nl.fontys.pawconnect.business.interf.users.LoginUserUseCase;
 import nl.fontys.pawconnect.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.pawconnect.configuration.security.token.impl.AccessToken;
 import nl.fontys.pawconnect.domain.requests.users.LoginUserRequest;
-import nl.fontys.pawconnect.domain.responses.users.LoginUserResponse;
 import nl.fontys.pawconnect.persistence.entity.UserEntity;
 import nl.fontys.pawconnect.persistence.interf.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +23,7 @@ public class LoginUserUseCaseImpl implements LoginUserUseCase {
 
     @Override
     @Transactional
-    public LoginUserResponse loginUser(LoginUserRequest request){
+    public String loginUser(LoginUserRequest request){
         Optional<UserEntity> loginUser = userRepository.findByUsernameOrEmail(request.getUsernameOrEmail(), request.getUsernameOrEmail());
         if(loginUser.isEmpty()){
             throw new LoginFailedException();
@@ -33,10 +32,7 @@ public class LoginUserUseCaseImpl implements LoginUserUseCase {
             throw new LoginFailedException();
         }
 
-        String accessToken = generateAccessToken(loginUser.get());
-        return LoginUserResponse.builder()
-                .accessToken(accessToken)
-                .build();
+        return generateAccessToken(loginUser.get());
     }
 
     private boolean matchesPassword(String rawPassword, String encodedPassword) {
