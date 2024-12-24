@@ -3,6 +3,7 @@ package nl.fontys.pawconnect.business.impl.users;
 import lombok.AllArgsConstructor;
 import nl.fontys.pawconnect.business.impl.UserConverter;
 import nl.fontys.pawconnect.business.exception.InvalidUserException;
+import nl.fontys.pawconnect.business.impl.validation.LoginValidator;
 import nl.fontys.pawconnect.business.interf.users.GetUserUseCase;
 import nl.fontys.pawconnect.configuration.security.token.impl.AccessToken;
 import nl.fontys.pawconnect.domain.User;

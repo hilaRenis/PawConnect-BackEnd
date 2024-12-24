@@ -1,6 +1,7 @@
 package nl.fontys.pawconnect.domain;
 
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -22,6 +23,9 @@ public class Message {
 
     @NotNull
     private String content;
+
+    @Nullable
+    private String referencedPostUUID;
 
     @NotNull
     private Date dateSent;

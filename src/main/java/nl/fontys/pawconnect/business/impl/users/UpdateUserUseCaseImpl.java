@@ -2,6 +2,7 @@ package nl.fontys.pawconnect.business.impl.users;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.pawconnect.business.exception.*;
+import nl.fontys.pawconnect.business.impl.validation.PasswordValidator;
 import nl.fontys.pawconnect.business.interf.users.UpdateUserUseCase;
 import nl.fontys.pawconnect.configuration.security.token.impl.AccessToken;
 import nl.fontys.pawconnect.domain.requests.users.UpdateUserRequest;

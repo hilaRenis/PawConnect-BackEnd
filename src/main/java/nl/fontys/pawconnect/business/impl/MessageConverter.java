@@ -13,6 +13,7 @@ public final class MessageConverter {
                 .dateSent(messageEntity.getDateSent())
                 .sender(UserConverter.convert(messageEntity.getSender()))
                 .recipient(UserConverter.convert(messageEntity.getRecipient()))
+                .referencedPostUUID(messageEntity.getReferencedPostUUID())
                 .build();
     }
 }

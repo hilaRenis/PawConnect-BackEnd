@@ -1,4 +1,4 @@
-package nl.fontys.pawconnect.business.impl.users;
+package nl.fontys.pawconnect.business.impl.validation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

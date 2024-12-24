@@ -23,5 +23,4 @@ public class CreateAnnouncementRequest {
     @Length(min = 3, max = 1000)
     @Column(name = "email")
     private String description;
-    private String referencedPostUUID;
 }

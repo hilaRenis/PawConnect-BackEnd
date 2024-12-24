@@ -1,6 +1,7 @@
 package nl.fontys.pawconnect.persistence.entity;
 
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -36,4 +37,8 @@ public class MessageEntity {
     @Column(name = "date_sent")
     @NotNull
     private Date dateSent;
+
+    @Nullable
+    @Column(name = "reference_post_id")
+    private String referencedPostUUID;
 }

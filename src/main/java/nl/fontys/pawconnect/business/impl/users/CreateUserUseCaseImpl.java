@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.pawconnect.business.exception.EmailAlreadyExistsException;
 import nl.fontys.pawconnect.business.exception.InvalidPasswordException;
 import nl.fontys.pawconnect.business.exception.UsernameAlreadyExistsException;
+import nl.fontys.pawconnect.business.impl.validation.PasswordValidator;
 import nl.fontys.pawconnect.business.interf.users.CreateUserUseCase;
 import nl.fontys.pawconnect.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.pawconnect.configuration.security.token.impl.AccessToken;
