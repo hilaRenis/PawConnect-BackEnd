@@ -3,6 +3,7 @@ package nl.fontys.pawconnect.domain;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,5 +14,6 @@ public class Announcement {
     private String title;
     private String description;
     private Date dateMade;
-    private User announcer;
+    private List<Image> images;
+    private UserDTO announcer;
 }

@@ -29,17 +29,20 @@ public class AnnouncementEntity {
 
     @NotBlank
     @Length(min = 3, max = 1000)
-    @Column(name = "email")
+    @Column(name = "description")
     private String description;
 
     @NotNull
     @Column(name = "date_made")
     private Date dateMade;
 
-    @ElementCollection // To store the list of URLs as a separate table
-    @CollectionTable(name = "announcement_images", joinColumns = @JoinColumn(name = "announcement_id"))
-    @Column(name = "image_url")
-    private List<String> imageUrls; // New field
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL) // Treated as OneToMany
+    @JoinTable(
+            name = "announcement_images",
+            joinColumns = @JoinColumn(name = "announcement_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id")
+    )
+    private List<ImageEntity> images;
 
     @ManyToOne
     @JoinColumn(name = "announcer_id", referencedColumnName = "id")

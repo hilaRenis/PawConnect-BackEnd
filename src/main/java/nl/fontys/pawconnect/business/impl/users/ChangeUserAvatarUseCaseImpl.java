@@ -6,6 +6,7 @@ import nl.fontys.pawconnect.business.exception.UnauthorizedAccessException;
 import nl.fontys.pawconnect.business.interf.AmazonFileService;
 import nl.fontys.pawconnect.business.interf.users.ChangeUserAvatarUseCase;
 import nl.fontys.pawconnect.configuration.security.token.impl.AccessToken;
+import nl.fontys.pawconnect.persistence.entity.ImageEntity;
 import nl.fontys.pawconnect.persistence.entity.UserEntity;
 import nl.fontys.pawconnect.persistence.interf.UserRepository;
 import org.springframework.stereotype.Service;
@@ -31,11 +32,11 @@ public class ChangeUserAvatarUseCaseImpl implements ChangeUserAvatarUseCase {
             }
 
             UserEntity user = userOptional.get();
-            String amazonFilePath = amazonFileService.uploadFile(multipartFile, "avatars/" + user.getUsername());
+            ImageEntity amazonFile = amazonFileService.uploadFile(multipartFile, "avatars/");
 
-            user.setAvatarUrl(amazonFilePath);
+            user.setAvatar(amazonFile);
             userRepository.save(user);
-            return amazonFilePath;
+            return amazonFile.getUrl();
 
         } else {
             throw new UnauthorizedAccessException("USER_ID_NOT_FROM_LOGGED_IN_USER");

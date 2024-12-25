@@ -46,9 +46,9 @@ public class UserEntity {
     private UserRoles role;
 
     @Nullable
-    @Length(min = 3, max = 110)
-    @Column(name = "avatar_url")
-    private String avatarUrl;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "avatar_id", referencedColumnName = "id")
+    private ImageEntity avatar;
 
     @OneToMany(mappedBy = "announcer", cascade = CascadeType.ALL)
     private List<AnnouncementEntity> announcements;

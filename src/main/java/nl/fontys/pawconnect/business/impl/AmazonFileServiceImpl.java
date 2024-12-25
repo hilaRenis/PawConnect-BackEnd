@@ -6,8 +6,11 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import nl.fontys.pawconnect.business.exception.FileUploadException;
 import nl.fontys.pawconnect.business.interf.AmazonFileService;
+import nl.fontys.pawconnect.persistence.entity.ImageEntity;
+import nl.fontys.pawconnect.persistence.interf.ImageRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Service
+@RequiredArgsConstructor
 public class AmazonFileServiceImpl implements AmazonFileService {
 
     private static final Logger LOG = LoggerFactory.getLogger(AmazonFileServiceImpl.class);
@@ -38,6 +42,8 @@ public class AmazonFileServiceImpl implements AmazonFileService {
 
     private AmazonS3 s3Client;
 
+    private final ImageRepository imageRepository;
+
     @PostConstruct
     private void initialize() {
         BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -47,19 +53,15 @@ public class AmazonFileServiceImpl implements AmazonFileService {
                 .build();
     }
 
-//    private File convertMultiPartFileToFile(final MultipartFile multipartFile) {
-//        final File file = new File(multipartFile.getOriginalFilename());
-//        try (final FileOutputStream outputStream = new FileOutputStream(file)) {
-//            outputStream.write(multipartFile.getBytes());
-//        } catch (IOException e) {
-//            LOG.error("Error {} occurred while converting the multipart file", e.getLocalizedMessage());
-//        }
-//        return file;
-//    }
-
     @Override
-    public String uploadFile(MultipartFile multipartFile, String filePath) {
+    public ImageEntity uploadFile(MultipartFile multipartFile, String directoryPath) {
         try {
+            // Uploading to S3 with generated UUID requires saving first with empty URL
+            ImageEntity image = ImageEntity.builder()
+                    .url("")
+                    .build();
+            image = imageRepository.save(image);  // Now image has the generated ID
+
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(multipartFile.getContentType());
             objectMetadata.setContentLength(multipartFile.getSize());
@@ -68,9 +70,11 @@ public class AmazonFileServiceImpl implements AmazonFileService {
             String fileExtension = (multipartFile.getOriginalFilename() != null && multipartFile.getOriginalFilename().contains("."))
                     ? multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf("."))
                     : "";
-            String bucketFilePath = filePath + fileExtension;
+            String bucketFilePath = directoryPath + image.getId() + fileExtension;
             s3Client.putObject(s3BucketName, bucketFilePath, multipartFile.getInputStream(), objectMetadata);
-            return String.format("%s/%s", s3BucketLink, bucketFilePath);
+            image.setUrl(String.format("%s/%s", s3BucketLink, bucketFilePath));
+
+            return imageRepository.save(image);
 
         } catch (IOException e) {
             LOG.error("Error occurred ==> {}", e.getMessage());

@@ -1,6 +1,5 @@
 package nl.fontys.pawconnect.domain;
 
-import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,14 +10,11 @@ import nl.fontys.pawconnect.persistence.entity.UserRoles;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserDTO {
     private String id;
     private String username;
-    private String email;
-    private String password;
     private String fullName;
     private UserRoles role;
-    @Nullable
     private Image avatar;
 }
 

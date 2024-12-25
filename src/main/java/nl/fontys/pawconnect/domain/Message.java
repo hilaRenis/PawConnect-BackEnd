@@ -16,10 +16,10 @@ public class Message {
     private String id;
 
     @NotNull
-    private User sender;
+    private UserDTO sender;
 
     @NotNull
-    private User recipient;
+    private UserDTO recipient;
 
     @NotNull
     private String content;

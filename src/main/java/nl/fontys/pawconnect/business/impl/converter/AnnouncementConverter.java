@@ -1,4 +1,4 @@
-package nl.fontys.pawconnect.business.impl;
+package nl.fontys.pawconnect.business.impl.converter;
 
 import nl.fontys.pawconnect.domain.Announcement;
 import nl.fontys.pawconnect.persistence.entity.AnnouncementEntity;
@@ -12,7 +12,11 @@ public final class AnnouncementConverter {
                 .title(entity.getTitle())
                 .description(entity.getDescription())
                 .dateMade(entity.getDateMade())
-                .announcer(UserConverter.convert(entity.getAnnouncer()))
+                .announcer(UserConverter.convertToDTO(entity.getAnnouncer()))
+                .images(entity.getImages()
+                        .stream()
+                        .map(ImageConverter::convert)
+                        .toList())
                 .build();
     }
 }

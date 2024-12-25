@@ -1,7 +1,7 @@
 package nl.fontys.pawconnect.business.impl.users;
 
 import lombok.AllArgsConstructor;
-import nl.fontys.pawconnect.business.impl.UserConverter;
+import nl.fontys.pawconnect.business.impl.converter.UserConverter;
 import nl.fontys.pawconnect.business.exception.InvalidUserException;
 import nl.fontys.pawconnect.business.impl.validation.LoginValidator;
 import nl.fontys.pawconnect.business.interf.users.GetUserUseCase;

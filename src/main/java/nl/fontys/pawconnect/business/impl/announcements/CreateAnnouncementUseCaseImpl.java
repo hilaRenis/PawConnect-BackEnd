@@ -8,6 +8,7 @@ import nl.fontys.pawconnect.configuration.security.token.impl.AccessToken;
 import nl.fontys.pawconnect.domain.requests.announcements.CreateAnnouncementRequest;
 import nl.fontys.pawconnect.domain.responses.announcements.CreateAnnouncementResponse;
 import nl.fontys.pawconnect.persistence.entity.AnnouncementEntity;
+import nl.fontys.pawconnect.persistence.entity.ImageEntity;
 import nl.fontys.pawconnect.persistence.interf.AnnouncementRepository;
 import nl.fontys.pawconnect.persistence.interf.UserRepository;
 import org.springframework.stereotype.Service;
@@ -36,9 +37,9 @@ public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase 
     public CreateAnnouncementResponse createAnnouncement(List<MultipartFile> images, CreateAnnouncementRequest request) {
         loginValidator.validateToken(accessToken, request.getUserId());
 
-        List<String> amazonFilePaths = new ArrayList<>();
+        List<ImageEntity> amazonFilePaths = new ArrayList<>();
         for(MultipartFile file : images) {
-            String amazonFilePath = amazonFileService.uploadFile(file, "announcements/" + file.getOriginalFilename());
+            ImageEntity amazonFilePath = amazonFileService.uploadFile(file, "announcements/");
             amazonFilePaths.add(amazonFilePath);
         }
 
@@ -48,13 +49,12 @@ public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase 
                 .build();
     }
 
-    private AnnouncementEntity saveNewAnnouncement(CreateAnnouncementRequest request, List<String> filePaths) {
+    private AnnouncementEntity saveNewAnnouncement(CreateAnnouncementRequest request, List<ImageEntity> imageEntities) {
         AnnouncementEntity newAnnouncement = AnnouncementEntity.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
                 .dateMade(Date.from(Instant.now()))
-                .announcer(userRepository.findById(request.getUserId()).get())
-                .imageUrls(filePaths)
+                .announcer(userRepository.findById(request.getUserId()).get()).images(imageEntities)
                 .build();
         return announcementRepository.save(newAnnouncement);
     }
