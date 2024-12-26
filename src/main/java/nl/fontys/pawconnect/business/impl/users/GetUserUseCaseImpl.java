@@ -18,9 +18,9 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class GetUserUseCaseImpl implements GetUserUseCase {
-    private UserRepository userRepository;
-    private LoginValidator loginValidator;
-    private AccessToken accessToken;
+    private final UserRepository userRepository;
+    private final LoginValidator loginValidator;
+    private final AccessToken accessToken;
 
     @Override
     @Transactional

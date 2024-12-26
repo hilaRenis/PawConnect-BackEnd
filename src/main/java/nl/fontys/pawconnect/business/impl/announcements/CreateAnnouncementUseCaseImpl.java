@@ -26,11 +26,11 @@ public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase 
     private final UserRepository userRepository;
     private final AnnouncementRepository announcementRepository;
 
-    private AccessToken accessToken;
+    private final AccessToken accessToken;
 
     private final LoginValidator loginValidator;
 
-    private AmazonFileService amazonFileService;
+    private final AmazonFileService amazonFileService;
 
     @Override
     @Transactional

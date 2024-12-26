@@ -2,6 +2,7 @@ package nl.fontys.pawconnect.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import nl.fontys.pawconnect.business.impl.validation.DeserializationValidator;
 import nl.fontys.pawconnect.business.interf.users.*;
 import nl.fontys.pawconnect.domain.requests.users.CreateUserRequest;
 import nl.fontys.pawconnect.domain.requests.users.GetUserRequest;
@@ -24,9 +25,6 @@ public class UsersController {
     private final UpdateUserUseCase updateUserUseCase;
     private final LoginUserUseCase loginUserUseCase;
 
-    //Only testing
-    private ChangeUserAvatarUseCase changeUserAvatarUseCase;
-
     @PostMapping("/signup")
     public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
         CreateUserResponse response = createUserUseCase.createUser(request);
@@ -46,16 +44,16 @@ public class UsersController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable(value = "id") String id,
-                                           @RequestBody @Valid UpdateUserRequest request) {
-        updateUserUseCase.updateUser(id, request);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{id}/avatar")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
-                                             @PathVariable(value = "id") final String userId) {
-        String filePath = changeUserAvatarUseCase.changeUserAvatar(file, userId);
-        return ResponseEntity.ok().body(filePath);
+    public ResponseEntity<Void> updateUser(@PathVariable(value = "id") final String id,
+                                           @RequestParam(value = "data", required = false) String requestJson,
+                                           @RequestParam(value = "avatar", required = false) MultipartFile file) {
+        try {
+            UpdateUserRequest request = DeserializationValidator.validateAndDeserialize(requestJson, UpdateUserRequest.class);
+            updateUserUseCase.updateUser(id, request, file);
+            return ResponseEntity.noContent().build();
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

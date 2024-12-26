@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import nl.fontys.pawconnect.business.exception.FileUploadException;
 import nl.fontys.pawconnect.business.interf.AmazonFileService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +56,7 @@ public class AmazonFileServiceImpl implements AmazonFileService {
     }
 
     @Override
+    @Transactional
     public ImageEntity uploadFile(MultipartFile multipartFile, String directoryPath) {
         try {
             // Uploading to S3 with generated UUID requires saving first with empty URL
@@ -79,6 +82,25 @@ public class AmazonFileServiceImpl implements AmazonFileService {
         } catch (IOException e) {
             LOG.error("Error occurred ==> {}", e.getMessage());
             throw new FileUploadException("Error occurred in file upload ==> "+e.getMessage());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteFile(String fileKey) {
+        try {
+            s3Client.deleteObject(s3BucketName, fileKey);
+            LOG.info("File successfully deleted from S3: {}", fileKey);
+
+            Optional<ImageEntity> imageOptional = imageRepository.findByUrl(String.format("%s/%s", s3BucketLink, fileKey));
+            if (imageOptional.isPresent()) {
+                imageRepository.delete(imageOptional.get());
+            } else {
+                LOG.warn("No ImageEntity found for fileKey: {}", fileKey);
+            }
+        } catch (Exception e) {
+            LOG.error("Error occurred while deleting file: {}", e.getMessage());
+            throw new RuntimeException("Error occurred while deleting file: " + e.getMessage());
         }
     }
 }
